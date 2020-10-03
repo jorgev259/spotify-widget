@@ -6,7 +6,7 @@ import FastAverageColor from 'fast-average-color'
 
 const fac = new FastAverageColor()
 
-export default function Widget ({ refresh, hash }) {
+export default function Widget ({ hash }) {
   const [song, setSong] = useState({
     id: null,
     name: '',
@@ -38,7 +38,6 @@ export default function Widget ({ refresh, hash }) {
         setTimeout(fetchSong, 2500)
       }).catch(err => {
         console.log(err)
-        refresh()
       })
     }
   }, [])
