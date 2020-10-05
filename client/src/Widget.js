@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styles from './css/small.module.css'
 import { Container } from 'reactstrap'
-import SpotifyWebApi from 'spotify-web-api-js'
+import { get } from 'axios'
 import FastAverageColor from 'fast-average-color'
 
 const fac = new FastAverageColor()
@@ -17,13 +17,12 @@ export default function Widget ({ hash }) {
   })
 
   useEffect(() => {
-    const spotifyApi = new SpotifyWebApi()
-    spotifyApi.setAccessToken(hash.access_token)
-
     fetchSong()
 
     function fetchSong () {
-      spotifyApi.getMyCurrentPlayingTrack().then(songFetch => {
+      get('/song').then(result => {
+        const songFetch = result.data.body
+
         if (songFetch.item.id !== song.id) {
           const result = {
             id: songFetch.item.id,
@@ -35,7 +34,7 @@ export default function Widget ({ hash }) {
           }
           setSong(result)
         }
-        setTimeout(fetchSong, 2500)
+        setTimeout(fetchSong, 1500)
       }).catch(err => {
         console.log(err)
       })
